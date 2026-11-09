@@ -1,20 +1,32 @@
-import { UsersIcon } from "lucide-react";
+import { UserPlusIcon } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { EncabezadoPagina } from "@/components/layout/encabezado-pagina";
-import { EstadoVacio } from "@/components/layout/estado-vacio";
+import { Button } from "@/components/ui/button";
+import { ListaAlumnos } from "@/modulos/alumnos/componentes/lista-alumnos";
+import { listarAlumnos } from "@/modulos/alumnos/consultas";
 
 export const metadata: Metadata = { title: "Alumnos" };
 
-export default function PaginaAlumnos() {
+export default async function PaginaAlumnos() {
+  const alumnos = await listarAlumnos();
+
   return (
     <>
-      <EncabezadoPagina titulo="Alumnos" />
-      <EstadoVacio
-        icono={UsersIcon}
-        titulo="Próximamente"
-        descripcion="Acá vas a ver y buscar a tus alumnos."
+      <EncabezadoPagina
+        titulo="Alumnos"
+        acciones={
+          alumnos.length > 0 && (
+            <Button asChild>
+              <Link href="/alumnos/nuevo">
+                <UserPlusIcon /> Nuevo
+              </Link>
+            </Button>
+          )
+        }
       />
+      <ListaAlumnos alumnos={alumnos} />
     </>
   );
 }

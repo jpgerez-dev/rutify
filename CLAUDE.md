@@ -103,5 +103,8 @@ Ver `.env.example`. `NEXT_PUBLIC_*` llega al navegador; `SUPABASE_SECRET_KEY` so
 
 ## Flujo de trabajo
 
-- Se avanza por etapas; al terminar cada una: `npm run check && npm run build`, prueba en el navegador en viewport mobile y commit.
+- Se avanza por etapas, **una rama por etapa** (`etapa-N-<tema>`) creada desde `main`, y **un PR por etapa** (`gh pr create`). Al terminar cada una: `npm run check && npm run build`, prueba en el navegador en viewport mobile, commit, push y PR.
+- El repo vive en OneDrive: `next dev` es muy lento (compilaciones de 20–50 s). Para pruebas E2E usar `npm run build && npx next start -p 3100`.
+- Pruebas con Playwright: si la ventana del navegador queda tapada, Chrome frena el render y las acciones dan timeout → `page.bringToFront()`. Usar un usuario temporal creado con la Admin API (secret key) y borrarlo al final (sus datos se borran en cascada).
+- Supabase-js: en un insert de varias filas, las columnas que faltan en alguna fila llegan como NULL (no toman el default). Mandar todas las columnas en todas las filas.
 - Fuente de ejercicios: free-exercise-db (github.com/yuhonas/free-exercise-db, Unlicense). Imágenes copiadas a Storage, nunca hotlink.
