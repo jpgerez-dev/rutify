@@ -101,7 +101,26 @@ scripts/                   # seed de ejercicios (free-exercise-db)
 
 Ver `.env.example`. `NEXT_PUBLIC_*` llega al navegador; `SUPABASE_SECRET_KEY` solo para scripts locales, jamás en la app ni con prefijo `NEXT_PUBLIC_`.
 
+## Estado
+
+| Etapa | Tema | Estado |
+|---|---|---|
+| 1 | Setup, Supabase, login y layout | ✅ Hecha (mergeada en `main`) |
+| 2 | ABM de alumnos | ✅ Hecha (rama `etapa-2-alumnos`, PR pendiente) |
+| 3 | Biblioteca de ejercicios + seed de free-exercise-db | Pendiente |
+| 4 | Constructor de rutinas | Pendiente |
+| 5 | Duplicar rutina y plantillas | Pendiente |
+| 6 | Ficha del alumno con historial de rutinas | Pendiente |
+| 7 | PDF | Pendiente |
+| 8 | Configuración del entrenador | Pendiente |
+
 ## Flujo de trabajo
 
-- Se avanza por etapas; al terminar cada una: `npm run check && npm run build`, prueba en el navegador en viewport mobile y commit.
+- Se avanza por etapas, **una rama por etapa** (`etapa-N-<tema>`) creada desde `main` actualizado.
+- **Claude solo commitea en la rama de la etapa.** No hace push, no abre PRs, no mergea ni usa `gh`: el usuario hace el push, abre el PR y lo mergea desde GitHub.
+- Commits **sin `Co-Authored-By` ni ninguna atribución** (configurado en `.claude/settings.json`).
+- Al terminar cada etapa: `npm run check && npm run build`, prueba en el navegador en viewport mobile, commit y lista de qué probar a mano.
+- El repo vive en OneDrive: `next dev` es muy lento (compilaciones de 20–50 s). Para pruebas E2E usar `npm run build && npx next start -p 3100`.
+- Pruebas con Playwright: si la ventana del navegador queda tapada, Chrome frena el render y las acciones dan timeout → `page.bringToFront()`. Usar un usuario temporal creado con la Admin API (secret key) y borrarlo al final (sus datos se borran en cascada).
+- Supabase-js: en un insert de varias filas, las columnas que faltan en alguna fila llegan como NULL (no toman el default). Mandar todas las columnas en todas las filas.
 - Fuente de ejercicios: free-exercise-db (github.com/yuhonas/free-exercise-db, Unlicense). Imágenes copiadas a Storage, nunca hotlink.
